@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router";
 import Home from "./pages/Home";
 import Nav from "./components/Nav";
 import Apply from "./pages/Apply";
-import { ApplicantsProps } from "./types";
 import Applicants from "./pages/Applicants";
 
 function App() {

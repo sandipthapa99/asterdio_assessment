@@ -5,36 +5,27 @@ import {
     Container,
     Flex,
     Grid,
-    Group,
     MantineNumberSize,
     Radio,
-    Text,
     Title,
     useMantineTheme,
 } from "@mantine/core";
 import { Form, Formik } from "formik";
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-import {
-    IconArrowNarrowLeft,
-    IconPhoto,
-    IconUpload,
-    IconX,
-} from "@tabler/icons-react";
+import { IconArrowNarrowLeft } from "@tabler/icons-react";
 import { InputField } from "../components/common/InputField";
 import DateField from "../components/common/DateField";
 import MultiFileDropzone from "../components/common/FileDropzone";
 import SelectField from "../components/common/SelectField";
 import { admissionFormValidationSchema } from "../validation/AdmissionFormValidation";
-import { convertToBase64 } from "../utils/convetToBase64";
+import { ApplyFormData } from "../utils/ApplyFormData";
 
 const ApplyForm = () => {
     const MAX_PHOTOS = 1;
     const MAX_PHOTO_SIZE = 2;
 
     const theme = useMantineTheme();
-    const [image, setImage] = useState();
     const navigate = useNavigate();
 
     return (
@@ -45,6 +36,7 @@ const ApplyForm = () => {
                         color: theme.colors.blue,
                         alignItems: "center",
                         marginBottom: 16,
+                        cursor: "pointer",
                     }}
                     onClick={() => navigate(-1)}
                 >
@@ -68,52 +60,29 @@ const ApplyForm = () => {
                     h={"100%"}
                 >
                     <Formik
-                        initialValues={{
-                            full_name: "",
-                            address: "",
-                            phone: "",
-                            email: "",
-                            guardian_name: "",
-                            guardian_phone: "",
-                            contact_person_address: "",
-                            contact_person_relation: "",
-                            faculty: "",
-                            program: "",
-                            gender: "male",
-                            dob: "",
-                            image: [],
-                            is_terms_condition: false,
-                            imagePreviewUrl: [],
-                        }}
+                        initialValues={ApplyFormData}
                         validationSchema={admissionFormValidationSchema}
                         onSubmit={async (values) => {
-                            const payload = {
-                                ...values,
-                                image: convertToBase64(values.image[0]) as any,
-                            };
-                            console.log("CVales: ", values);
-                            console.log("payload: ", payload);
+                            delete values.imagePreviewUrl;
                             if (localStorage.getItem("admission_data")) {
                                 const existingData = JSON.parse(
                                     localStorage.getItem("admission_data") ||
                                         "[]"
                                 );
                                 console.log("1", existingData);
-                                existingData.push(payload);
-                                console.log("2", existingData);
+                                existingData.push(values);
                                 localStorage.setItem(
                                     "admission_data",
                                     JSON.stringify(existingData)
                                 );
                             } else {
                                 const data = [];
-                                data.push(payload);
+                                data.push(values);
                                 localStorage.setItem(
                                     "admission_data",
                                     JSON.stringify(data)
                                 );
                             }
-                            // localStorage.setItem;
                         }}
                     >
                         {({ touched, errors, values, setFieldValue }) => (
@@ -396,7 +365,12 @@ const ApplyForm = () => {
                                         label={
                                             <>
                                                 I have read the{" "}
-                                                <Link to={"/"}>
+                                                <Link
+                                                    to={
+                                                        "https://www.lipsum.com/"
+                                                    }
+                                                    target="_blank"
+                                                >
                                                     terms and conditions
                                                 </Link>
                                             </>

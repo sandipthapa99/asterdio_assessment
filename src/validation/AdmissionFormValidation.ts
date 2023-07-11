@@ -40,4 +40,7 @@ export const admissionFormValidationSchema = Yup.object().shape({
                 })
         )
         .required("Required field"),
+    is_terms_condition: Yup.boolean()
+        .required("The terms and conditions must be accepted.")
+        .oneOf([true], "The terms and conditions must be accepted."),
 });

@@ -84,4 +84,5 @@ export type ApplicantsProps = Array<{
     gender: string;
     dob: string;
     image: string;
+    image_preview_url: any[];
 }>;

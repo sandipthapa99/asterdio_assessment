@@ -2,67 +2,49 @@ import React, { useEffect } from "react";
 
 import { useState } from "react";
 import {
-    createStyles,
     Table,
-    Checkbox,
     ScrollArea,
     Group,
     Avatar,
     Text,
-    rem,
     Container,
     Title,
     Button,
-    Box,
     Flex,
 } from "@mantine/core";
-import { ApplicantsProps } from "../types";
-import { Link, useNavigate } from "react-router-dom";
-
-const applicants: ApplicantsProps = JSON.parse(
-    localStorage.getItem("admission_data") ?? "[]"
-);
+import { useNavigate } from "react-router-dom";
 
 const Applicants = () => {
-    const [data, setData] = useState(applicants);
-
     useEffect(() => {
         const handleStorageChange = (event: StorageEvent) => {
-            // Check if the updated data is from the specific key you're interested in
             if (event.key === "admission_data") {
-                setData(JSON.parse(event.newValue || ""));
-                // Update your component or perform any necessary actions
-                console.log("Data in localStorage has changed!");
+                // Update state with new data
+                setData(
+                    JSON.parse(localStorage.getItem("admission_data") || "")
+                );
             }
         };
 
-        // Add the event listener when the component mounts
+        // Adding event listener when the component mounts
         window.addEventListener("storage", handleStorageChange);
 
-        // Remove the event listener when the component unmounts
+        // Removing event listener when the component unmounts
         return () => {
             window.removeEventListener("storage", handleStorageChange);
         };
     }, []);
 
-    const [selection, setSelection] = useState(["1"]);
-    const toggleRow = (id: string) =>
-        setSelection((current) =>
-            current.includes(id)
-                ? current.filter((item) => item !== id)
-                : [...current, id]
-        );
-    // const toggleAll = () =>
-    //     setSelection((current) =>
-    //         current.length === data.length ? [] : data.map((item) => item.id)
-    //     );
+    const [data, setData] = useState(
+        JSON.parse(localStorage.getItem("admission_data") ?? "[]")
+    );
 
-    const rows = data.map((item, index) => {
+    const rows = data.map((item: any, index: number) => {
+        console.log("first", item);
         return (
             <tr key={index}>
                 <td>
                     <Group spacing="sm">
-                        <Avatar size={26} src={item.image ?? ""} radius={26} />
+                        {/* <Avatar size={48} src={item.image ?? ""} radius={48} /> */}
                         <Text size="sm" weight={500}>
                             {item.full_name}
                         </Text>
