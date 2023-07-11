@@ -10,6 +10,8 @@ import {
     Title,
     useMantineTheme,
 } from "@mantine/core";
+import { format } from "date-fns";
+
 import { Form, Formik } from "formik";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,6 +23,8 @@ import SelectField from "../components/common/SelectField";
 import { admissionFormValidationSchema } from "../validation/AdmissionFormValidation";
 import { ApplyFormData } from "../utils/ApplyFormData";
 import { useMediaQuery } from "@mantine/hooks";
+import { scrollToElement } from "../utils/ScrollToELement";
+import { toast } from "../components/common/Toast";
 
 const ApplyForm = () => {
     const MAX_PHOTOS = 1;
@@ -64,27 +68,34 @@ const ApplyForm = () => {
                     <Formik
                         initialValues={ApplyFormData}
                         validationSchema={admissionFormValidationSchema}
-                        onSubmit={async (values) => {
+                        onSubmit={async (values, actions) => {
+                            const payload = {
+                                ...values,
+                                dob: format(new Date(values.dob), "PP"),
+                            };
                             delete values.imagePreviewUrl;
                             if (localStorage.getItem("admission_data")) {
                                 const existingData = JSON.parse(
                                     localStorage.getItem("admission_data") ||
                                         "[]"
                                 );
-                                console.log("1", existingData);
-                                existingData.push(values);
+                                existingData.push(payload);
                                 localStorage.setItem(
                                     "admission_data",
                                     JSON.stringify(existingData)
                                 );
                             } else {
                                 const data = [];
-                                data.push(values);
+                                data.push(payload);
                                 localStorage.setItem(
                                     "admission_data",
                                     JSON.stringify(data)
                                 );
                             }
+                            actions.resetForm();
+                            toast.success(
+                                "Application submitted successfully."
+                            );
                         }}
                     >
                         {({ touched, errors, values, setFieldValue }) => (
@@ -308,19 +319,19 @@ const ApplyForm = () => {
                                                 placeholder="Select a faculty"
                                                 data={[
                                                     {
-                                                        value: "business",
+                                                        value: "Business",
                                                         label: "Business",
                                                     },
                                                     {
-                                                        value: "information_technologu",
+                                                        value: "Information Technologu",
                                                         label: "Information Technology",
                                                     },
                                                     {
-                                                        value: "agriculture",
+                                                        value: "Agriculture",
                                                         label: "Agriculture",
                                                     },
                                                     {
-                                                        value: "journalism",
+                                                        value: "Journalism",
                                                         label: "Journalism",
                                                     },
                                                 ]}
@@ -395,6 +406,14 @@ const ApplyForm = () => {
                                     <Button
                                         type="submit"
                                         fullWidth={smallScreen}
+                                        onClick={() => {
+                                            if (errors) {
+                                                scrollToElement(
+                                                    Object.keys(errors)[0],
+                                                    "smooth"
+                                                );
+                                            }
+                                        }}
                                     >
                                         Submit
                                     </Button>

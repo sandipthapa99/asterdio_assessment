@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { format, parseISO } from "date-fns";
 
 import { useState } from "react";
 import {
@@ -38,7 +39,6 @@ const Applicants = () => {
     );
 
     const rows = data.map((item: any, index: number) => {
-        console.log("first", item);
         return (
             <tr key={index}>
                 <td>

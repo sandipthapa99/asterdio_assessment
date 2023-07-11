@@ -4,10 +4,12 @@ import Home from "./pages/Home";
 import Nav from "./components/Nav";
 import Apply from "./pages/Apply";
 import Applicants from "./pages/Applicants";
+import { Notifications } from "@mantine/notifications";
 
 function App() {
     return (
         <>
+            <Notifications />
             <Nav />
             <Routes>
                 <Route path="/" element={<Home />} />
