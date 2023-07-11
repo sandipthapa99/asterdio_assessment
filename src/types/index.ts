@@ -69,3 +69,19 @@ export type MultiFileDropzoneProps = {
     showFileDetail?: boolean;
     withCloseButton?: boolean;
 };
+
+export type ApplicantsProps = Array<{
+    full_name: string;
+    address: string;
+    phone: string;
+    email: string;
+    guardian_name: string;
+    guardian_phone: string;
+    contact_person_address: string;
+    contact_person_relation: string;
+    faculty: string;
+    program: string;
+    gender: string;
+    dob: string;
+    image: string;
+}>;

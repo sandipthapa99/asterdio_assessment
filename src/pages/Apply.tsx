@@ -14,9 +14,14 @@ import {
 } from "@mantine/core";
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-import { IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
+import {
+    IconArrowNarrowLeft,
+    IconPhoto,
+    IconUpload,
+    IconX,
+} from "@tabler/icons-react";
 import { InputField } from "../components/common/InputField";
 import DateField from "../components/common/DateField";
 import MultiFileDropzone from "../components/common/FileDropzone";
@@ -30,11 +35,22 @@ const ApplyForm = () => {
 
     const theme = useMantineTheme();
     const [image, setImage] = useState();
-    console.log(image);
+    const navigate = useNavigate();
 
     return (
         <>
             <Container size={"xl"}>
+                <Flex
+                    sx={{
+                        color: theme.colors.blue,
+                        alignItems: "center",
+                        marginBottom: 16,
+                    }}
+                    onClick={() => navigate(-1)}
+                >
+                    <IconArrowNarrowLeft size={24} />
+                    <span>Go back</span>
+                </Flex>
                 <Box
                     sx={{
                         background: "#fff",
@@ -140,7 +156,7 @@ const ApplyForm = () => {
                                                 touch={touched.dob}
                                                 withAsterisk
                                                 // icon={<IconCalendarEvent size={20} />}
-                                                minDate={new Date()}
+                                                maxDate={new Date()}
                                                 onChange={(value: Date) => {
                                                     setFieldValue("dob", value);
                                                 }}
@@ -259,7 +275,7 @@ const ApplyForm = () => {
                                                 id="guardian"
                                                 name={"guardian_phone"}
                                                 label={"Phone"}
-                                                placeholder=" Phone Number"
+                                                placeholder="Phone Number"
                                                 touch={touched.guardian_phone}
                                                 error={errors.guardian_phone}
                                                 data-autofocus
@@ -311,11 +327,12 @@ const ApplyForm = () => {
                                                 id="faculty"
                                                 name={"faculty"}
                                                 label={"Faculty"}
-                                                // handleChange={(data) => {
-                                                //     setfacultyFilter(data);
-                                                //     setFieldValue("faculty", data);
-                                                //     setFieldValue("service", "");
-                                                // }}
+                                                handleChange={(data) => {
+                                                    setFieldValue(
+                                                        "faculty",
+                                                        data
+                                                    );
+                                                }}
                                                 searchable
                                                 placeholder="Select a faculty"
                                                 data={[
@@ -340,45 +357,36 @@ const ApplyForm = () => {
                                                 error={errors.faculty}
                                                 withAsterisk
                                             />
+                                        </Grid.Col>
+                                        <Grid.Col md={6}>
                                             <SelectField
                                                 id="program"
                                                 name={"program"}
                                                 label={"Program"}
-                                                // handleChange={(data) => {
-                                                //     setprogramFilter(data);
-                                                //     setFieldValue("program", data);
-                                                //     setFieldValue("service", "");
-                                                // }}
+                                                handleChange={(data) => {
+                                                    setFieldValue(
+                                                        "program",
+                                                        data
+                                                    );
+                                                }}
                                                 searchable
                                                 placeholder="Select a program"
                                                 data={[
                                                     {
-                                                        value: "bachelors",
+                                                        value: "Bachelors",
                                                         label: "Bachelors",
                                                     },
                                                     {
-                                                        value: "masters",
+                                                        value: "Masters",
                                                         label: "Masters",
                                                     },
                                                     {
-                                                        value: "phd",
+                                                        value: "Phd",
                                                         label: "Phd",
                                                     },
                                                 ]}
                                                 touch={touched.program}
                                                 error={errors.program}
-                                                withAsterisk
-                                            />
-                                        </Grid.Col>
-                                        <Grid.Col md={6}>
-                                            <InputField
-                                                id="guardian"
-                                                name={"guardian_name"}
-                                                label={"Guardian Name"}
-                                                placeholder="Guardian Name"
-                                                touch={touched.guardian_name}
-                                                error={errors.guardian_name}
-                                                data-autofocus
                                                 withAsterisk
                                             />
                                         </Grid.Col>
