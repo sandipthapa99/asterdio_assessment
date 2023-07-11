@@ -5,7 +5,6 @@ import {
     Table,
     ScrollArea,
     Group,
-    Avatar,
     Text,
     Container,
     Title,

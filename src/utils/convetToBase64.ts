@@ -7,9 +7,10 @@ export const convertToBase64 = (
     let reader = new FileReader();
 
     reader.onloadend = () => {
-        console.log("result: ", reader.result);
         setImage(reader.result);
         return reader.result;
     };
     reader.readAsDataURL(file);
 };
+
+// Issue in this part

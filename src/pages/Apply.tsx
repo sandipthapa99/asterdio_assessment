@@ -20,6 +20,7 @@ import MultiFileDropzone from "../components/common/FileDropzone";
 import SelectField from "../components/common/SelectField";
 import { admissionFormValidationSchema } from "../validation/AdmissionFormValidation";
 import { ApplyFormData } from "../utils/ApplyFormData";
+import { useMediaQuery } from "@mantine/hooks";
 
 const ApplyForm = () => {
     const MAX_PHOTOS = 1;
@@ -27,6 +28,7 @@ const ApplyForm = () => {
 
     const theme = useMantineTheme();
     const navigate = useNavigate();
+    const smallScreen = useMediaQuery("(max-width: 991px)");
 
     return (
         <>
@@ -390,7 +392,12 @@ const ApplyForm = () => {
                                                 : null
                                         }
                                     />
-                                    <Button type="submit">Submit</Button>
+                                    <Button
+                                        type="submit"
+                                        fullWidth={smallScreen}
+                                    >
+                                        Submit
+                                    </Button>
                                 </Form>
                             </>
                         )}
